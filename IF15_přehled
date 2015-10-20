@@ -1,0 +1,81 @@
+case sensitive
+
+Indentifikátor
+	1* "a-zA-Z_"
+	n* "a-zA-Z_0-9"
+
+Klíčová slova
+	2*-6* "a-z"
+
+	auto
+	cin
+	cout
+	double		datový typ
+	else
+	for
+	if
+	int		datový typ
+	return
+	string		datový typ
+	while
+	do
+	bool
+	true
+	false
+	break
+	continue
+
+Celočíselný literál
+	n* "0-9"
+	celé nezáporné číslo v desítkové soustavě
+	rozsah (C int)
+	\x__ hexa 2*
+	\b________ binary 8*
+	\0___ okta 3*
+
+Desetinný literál
+	n* "0-9.+-eE"
+	nezáporné číslo v desítkové soustavě	
+	rozsah (C double)
+
+Řetězcový literál
+	n* cokoliv
+	začíná " a končí " (ASCII 34)
+	nejdéle do konce řádku
+	některé znaky zapisovány pomocí escape sekvence (pozor na \" \n \t \\ )
+	\x__ hexa 2*
+	\b________ binary 8*
+	\0___ okta 3*
+
+Funkce
+	identifikátor( n* cokoliv )
+	pozor na vnořené fce
+	oddělení argumentů čárkou
+
+Složený příkaz
+	{ }
+
+Závorky
+	( )
+-----------------------------------------------------
+
+Kometáře
+	jednořádkové // (ASCII 47)
+		n* cokoliv
+		do konce řádku
+	blokové /* */
+		n* cokoliv od začátku do konce
+
+Bílé znaky
+	libovolný počet kdekoliv mimo lexémy
+	(mezera, tabulátor, odřádkování a komentář)
+
+Příkazy ukončeny středníkem
+	; (ASCII 59)
+
+Operátory
+	* / + - < > <= >= == != ++ --
+	! && || =
+
+Příkazy
+	>> <<
