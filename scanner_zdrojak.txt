@@ -1,0 +1,11 @@
+auto cin cout if else for bool while do
+double int string true false break continue return and or
+
+prom1 _prom2
+
+!=  ==  <  >  >=  <= 
+=  +  -  *  /  ++  --  ;
+(  )  {  }
+
+15
+12.5
