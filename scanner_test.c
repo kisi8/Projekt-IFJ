@@ -16,13 +16,13 @@ int main()
   FILE *source;
   tToken token;
 
-  source = fopen ("scanner_zdrojak.txt","r");
-  if (source!=NULL){
+  source = fopen("scanner_zdrojak.txt","r");
+  if (source==NULL){
     printf("%s\n", "Soubor neslo otevrit, pravdepodobne neexistuje" );
     return 1;
   }
 
-
+  /*
   tLexeme table[numElem] = 
                     {// 0                                4                                 8
                      AUTO_tk, CIN_tk, COUT_tk, IF_tk, ELSE_tk, FOR_tk, BOOL_tk, WHILE_tk, DO_tk, 
@@ -42,12 +42,21 @@ int main()
                      EOF_tk,
                     };
 
-  for(int i=0; i < (numElem-1); i++){
-    token = get_token();
-    if(table[i] != token.lexeme)
-      printf("%s %d\n", "Chyba TOKENU na pozici", i );
-  }
+  for(int i=0; i < (numElem-1); i++){                                         // před použitím je třeba aktualizovat tabulku výše podle scanner.h
+    token = get_token(source);                                                // 
+    if(table[i] != token.lexeme)                                              // 
+      printf("%s %d\n", "Chyba TOKENU na pozici", i );                        // 
+  */
+  
+  do
+    {    
+     token = get_token(source);
+     printf("%d\n", token.lexeme);
+    } while(token.lexeme != EOF_tk ) ;
 
+
+  
+  
   printf("%s\n", "KONEC TESTU");
 
   fclose(source);
