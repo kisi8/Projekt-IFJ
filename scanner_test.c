@@ -42,10 +42,18 @@ int main()
                      EOF_tk,
                     };
 
-  for(int i=0; i < (numElem-1); i++){
-    token = get_token();
-    if(table[i] != token.lexeme)
-      printf("%s %d\n", "Chyba TOKENU na pozici", i );
+//  for(int i=0; i < (numElem-1); i++){                                         // nechápu smysl těcho 4 řádků
+//    token = get_token(source);                                                // 2. řádek
+//    if(table[i] != token.lexeme)                                              // 3. řádek
+//      printf("%s %d\n", "Chyba TOKENU na pozici", i );                        // 4. řádek
+
+  do
+    {    
+     token = get_token(source);
+     printf("%d\n", token.lexeme);
+    } while(token.lexeme != EOF_tk ) ;
+
+
   }
 
   printf("%s\n", "KONEC TESTU");
