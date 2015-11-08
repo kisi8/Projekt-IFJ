@@ -53,7 +53,7 @@ typedef struct
 } tToken;
 
 
-tToken get_token();
+tToken get_token(FILE *source);
 
 #endif
 
