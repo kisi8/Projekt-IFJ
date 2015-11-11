@@ -10,54 +10,234 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include "scanner.h"
 
-tToken get_token()
+tToken get_token(FILE *source)
 {
-  // tato funkce bude vracet nacetny strukturu TOKEN (ukazatel na jeji zacatek)
+  // tato funkce bude vracet nacetnou strukturu TOKEN
+  tToken token;
+  int znak;
+  
+  do
+    {
+     znak = fgetc(source);
+     token.lexeme = -1;                                                // výchozí hodnota porovnávání
+     
+     if(znak==EOF){ token.lexeme = EOF_tk; break;}                     // pokud najdeme EOF, vrátíme token EOF_tk
+     if(isspace(znak)!=0){ continue;}                                  // bílé znaky
+     if(znak=='('){ token.lexeme = LR_BRACKET_tk; break;}              // (
+     if(znak==')'){ token.lexeme = RR_BRACKET_tk; break;}              // )    
+     if(znak=='{'){ token.lexeme = LC_BRACKET_tk; break;}              // {
+     if(znak=='}'){ token.lexeme = RC_BRACKET_tk; break;}              // } 
+     if(znak=='*'){ token.lexeme = MUL_tk; break;}                     // *
+     if(znak==';'){ token.lexeme = SEMICOLON_tk; break;}               // ;
+     
+     
+     
+     if(znak=='|')
+       {
+        znak = fgetc(source);
+        if(znak=='|')
+          { token.lexeme = OR_tk; break; }                             // ||
+        else
+          { token.lexeme = ERROR_tk; break; }
+       }            
+     
+     
+     
+     if(znak=='&')
+       {
+        znak = fgetc(source);
+        if(znak=='&')
+          { token.lexeme = AND_tk; break; }                            // &&
+        else
+          { token.lexeme = ERROR_tk; break; }
+       }            
+     
+     
+     
+     if(znak=='+')
+       {
+        znak = fgetc(source);
+        if(znak=='+')
+          { token.lexeme = INC_tk; break; }                            // ++
+        else
+          { ungetc(znak, source); token.lexeme = ADD_tk; break; }      // +
+       }         
+     
+     
+     
+     if(znak=='-')
+       {
+        znak = fgetc(source);
+        if(znak=='-')
+          { token.lexeme = DEC_tk; break; }                            // --
+        else
+          { ungetc(znak, source); token.lexeme = SUB_tk; break; }      // -
+       }  
+       
+       
+       
+     if(znak=='!')
+       {
+        znak = fgetc(source);
+        if(znak=='=')
+          { token.lexeme = NOTEQUAL_tk; break; }                       // !=
+        else
+          { ungetc(znak, source); token.lexeme = NOT_tk; break; }      // !
+       }         
+       
+       
+       
+     if(znak=='=')
+       {
+        znak = fgetc(source);
+        if(znak=='=')
+          { token.lexeme = EQUAL_tk; break; }                          // ==
+        else
+          { ungetc(znak, source); token.lexeme = ASSIGN_tk; break; }   // =
+       }         
+       
+       
+       
+     if(znak=='<')
+       {
+        znak = fgetc(source);
+        if(znak=='<')
+          { token.lexeme = INPUT_tk; break; }                            //  <<
+        else if(znak=='=')
+          { token.lexeme = LESSEQUAL_tk; break; }                      // <=  
+        else
+          { ungetc(znak, source); token.lexeme = LESS_tk; break; }     // <
+       }             
+       
+       
+       
+     if(znak=='>')
+       {
+        znak = fgetc(source);
+        if(znak=='>')
+          { token.lexeme = OUTPUT_tk; break; }                           //  >>
+        else if(znak=='=')
+          { token.lexeme = GREATEREQUAL_tk; break; }                   // >=  
+        else
+          { ungetc(znak, source); token.lexeme = GREATER_tk; break; }  // >
+       }       
+       
+       
+       
+     if(znak=='/')
+       {
+        znak = fgetc(source);
+        if(znak=='/')
+          { do{ znak = fgetc(source);} while(znak != 10 || znak != 13 || znak != EOF); }         // jednoradkova poznamka // ... , ukonceno CR nebo LF
+        else if(znak=='*')
+          {  
+           while(1)
+             {                                                                                   // viceradkovy komentar /* ... */
+              znak = fgetc(source);                                                              
+              if(znak==EOF){ token.lexeme = ERROR_tk; break;}                                    // neukončený víceřádkový komentář
+              if(znak=='*')
+                {
+                 znak = fgetc(source);
+                 if(znak=='/'){break;}
+                 else {ungetc(znak, source);}
+                }
+             }
+          if(token.lexeme==EOF_tk){break;}    
+          }                                                                          
+        else                                                                                     
+          { ungetc(znak, source); token.lexeme = DIV_tk; break; }                                // operator /
+       }         
+       
+       
+       
+     if( isdigit(znak) != 0 )                                                                    // načítání INT
+       {                                                                                         // jak řešit dlouhá čísla, třeba o 50 cifrách?
+        
+        tNumber value_int;
+        value_int.num = znak;     
+        
+        while(1)
+          {
+           znak = fgetc(source);
+           if( isdigit(znak) != 0)
+             {
+              value_int.num *= 10;
+              value_int.num += znak;
+             }
+           else
+             {
+              ungetc(znak, source);
+              token.lexeme = NUM_tk;
+              token.token_num = value_int;
+              break;
+             }  
+          }
+        if(token.lexeme==NUM_tk){break;}
+       }         
+       
+       
+       
+     if( isalpha(znak) != 0 || znak=='_')                                                        // načítání ID, FCE a klíčových slov
+       {                                                                                         // jak řešit dlouhá ID, třeba o 150 znacích?
+        
+        tNumber value;
+        value.string = (char *)malloc(50*sizeof(char));
+        if(value.string == NULL){ token.lexeme=ERROR_tk; break; }                                // chyba malloc - jak ošetřit?
+        int lenght = 1;
+        
+        *(value.string) = (char)znak;
+        
+        while(1)
+          {
+           znak = fgetc(source);
+           if( isalnum(znak) != 0 || znak=='_')
+             {
+              *(value.string + lenght*sizeof(char)) = (char)znak;
+              lenght++;
+             }
+           else
+             {
+              ungetc(znak, source);
+              token.lexeme = ID_tk;
+              token.token_num = value;
+              break;
+             }  
+          }
+        // printf( "%s\n", value.string);   // for debugging only
+        if(strcmp(value.string, "auto") == 0){ token.lexeme = AUTO_tk; free(value.string); break; }            // detekce klíčových slov
+        if(strcmp(value.string, "cin") == 0){ token.lexeme = CIN_tk; free(value.string); break; }
+        if(strcmp(value.string, "cout") == 0){ token.lexeme = COUT_tk; free(value.string); break; }
+        if(strcmp(value.string, "if") == 0){ token.lexeme = IF_tk; free(value.string); break; }
+        if(strcmp(value.string, "else") == 0){ token.lexeme = ELSE_tk; free(value.string); break; }
+        if(strcmp(value.string, "for") == 0){ token.lexeme = FOR_tk; free(value.string); break; }
+        if(strcmp(value.string, "bool") == 0){ token.lexeme = BOOL_tk; free(value.string); break; }
+        if(strcmp(value.string, "while") == 0){ token.lexeme = WHILE_tk; free(value.string); break; }
+        if(strcmp(value.string, "do") == 0){ token.lexeme = DO_tk; free(value.string); break; }
+        if(strcmp(value.string, "double") == 0){ token.lexeme = DOUBLE_tk; free(value.string); break; }
+        if(strcmp(value.string, "int") == 0){ token.lexeme = INT_tk; free(value.string); break; }
+        if(strcmp(value.string, "string") == 0){ token.lexeme = STRING_tk; free(value.string); break; }
+        if(strcmp(value.string, "true") == 0){ token.lexeme = TRUE_tk; free(value.string); break; }
+        if(strcmp(value.string, "false") == 0){ token.lexeme = FALSE_tk; free(value.string); break; }
+        if(strcmp(value.string, "break") == 0){ token.lexeme = BREAK_tk; free(value.string); break; }
+        if(strcmp(value.string, "continue") == 0){ token.lexeme = CONTINUE_tk; free(value.string); break; }
+        if(strcmp(value.string, "return") == 0){ token.lexeme = RETURN_tk; free(value.string); break; }
+
+        break;
+       }        
+       
+       
+       
+       
+       
+       
+            
+      
+    } while(znak != EOF);  
 
   
-  tToken token;
 
   return token;
-
-
 }
-
-
-//--------------------------------------- FCE ---------------------------
-
-
-
-
-/*tToken posli_token(FILE *zdrojak)
-  {  
-   tToken token;
-   
-    
-    
-    int znak;
-     do
-       {
-        znak = fgetc(zdrojak);
-        
-        if(znak==EOF){ token.lexem = EOF_tk; }                   // pokud najdeme EOF, vrátíme token EOF_tk
-        
-        if(isalpha(znak) || znak=='_')                           // nedokoncena fce na nacitani identifikatoru
-          {
-           while(1)
-             {
-              if(isalnum(znak) || znak=='_')
-             }     
-          }
-        
-        
-        
-       } while(znak != EOF);
-
-  
-   return token;
-  }
-
- */
-
