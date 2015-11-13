@@ -23,14 +23,17 @@ typedef enum
   // Zavorky (  (  )  {  } ) .......  LeftRoundBracket, RightRoundBracket, LeftCurlyBracket, RightCurlyBracket
   LR_BRACKET_tk, RR_BRACKET_tk, LC_BRACKET_tk, RC_BRACKET_tk,
 
-  // Updatde !  ||   &&  <<   >>
+  // !      ||     &&      <<         >>
   NOT_tk, OR_tk, AND_tk, INPUT_tk, OUTPUT_tk,
 
   // Konec souboru
   EOF_tk,
 
-  // Chyba tokenu?
-  ERROR_tk          
+  // Chyba lexikální analýzy
+  ERROR_tk,          
+
+  // Chyba programu (neúspěch malloc (); atd )
+  FAILURE_tk  
    
   } tLexeme;
 
