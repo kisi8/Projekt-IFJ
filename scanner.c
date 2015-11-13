@@ -22,16 +22,16 @@ tToken get_token(FILE *source)
   do
     {
      znak = fgetc(source);
-     token.lexeme = -1;                                                // výchozí hodnota porovnávání
+     token.lexeme = -1;                                                                                        // výchozí hodnota porovnávání
      
-     if(znak==EOF){ token.lexeme = EOF_tk; break;}                     // pokud najdeme EOF, vrátíme token EOF_tk
-     if(isspace(znak)!=0){ continue;}                                  // bílé znaky
-     if(znak=='('){ token.lexeme = LR_BRACKET_tk; break;}              // (
-     if(znak==')'){ token.lexeme = RR_BRACKET_tk; break;}              // )    
-     if(znak=='{'){ token.lexeme = LC_BRACKET_tk; break;}              // {
-     if(znak=='}'){ token.lexeme = RC_BRACKET_tk; break;}              // } 
-     if(znak=='*'){ token.lexeme = MUL_tk; break;}                     // *
-     if(znak==';'){ token.lexeme = SEMICOLON_tk; break;}               // ;
+     if(znak==EOF){ token.lexeme = EOF_tk; break;}                                                             // pokud najdeme EOF, vrátíme token EOF_tk
+     if(isspace(znak)!=0){ continue;}                                                                          // bílé znaky
+     if(znak=='('){ token.lexeme = LR_BRACKET_tk; break;}                                                      // (
+     if(znak==')'){ token.lexeme = RR_BRACKET_tk; break;}                                                      // )    
+     if(znak=='{'){ token.lexeme = LC_BRACKET_tk; break;}                                                      // {
+     if(znak=='}'){ token.lexeme = RC_BRACKET_tk; break;}                                                      // } 
+     if(znak=='*'){ token.lexeme = MUL_tk; break;}                                                             // *
+     if(znak==';'){ token.lexeme = SEMICOLON_tk; break;}                                                       // ;
      
      
      
@@ -39,7 +39,7 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='|')
-          { token.lexeme = OR_tk; break; }                             // ||
+          { token.lexeme = OR_tk; break; }                                                                     // ||
         else
           { token.lexeme = ERROR_tk; break; }
        }            
@@ -50,7 +50,7 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='&')
-          { token.lexeme = AND_tk; break; }                            // &&
+          { token.lexeme = AND_tk; break; }                                                                    // &&
         else
           { token.lexeme = ERROR_tk; break; }
        }            
@@ -61,9 +61,9 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='+')
-          { token.lexeme = INC_tk; break; }                            // ++
+          { token.lexeme = INC_tk; break; }                                                                    // ++
         else
-          { ungetc(znak, source); token.lexeme = ADD_tk; break; }      // +
+          { ungetc(znak, source); token.lexeme = ADD_tk; break; }                                              // +
        }         
      
      
@@ -72,9 +72,9 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='-')
-          { token.lexeme = DEC_tk; break; }                            // --
+          { token.lexeme = DEC_tk; break; }                                                                    // --
         else
-          { ungetc(znak, source); token.lexeme = SUB_tk; break; }      // -
+          { ungetc(znak, source); token.lexeme = SUB_tk; break; }                                              // -
        }  
        
        
@@ -83,9 +83,9 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='=')
-          { token.lexeme = NOTEQUAL_tk; break; }                       // !=
+          { token.lexeme = NOTEQUAL_tk; break; }                                                               // !=
         else
-          { ungetc(znak, source); token.lexeme = NOT_tk; break; }      // !
+          { ungetc(znak, source); token.lexeme = NOT_tk; break; }                                              // !
        }         
        
        
@@ -94,9 +94,9 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='=')
-          { token.lexeme = EQUAL_tk; break; }                          // ==
+          { token.lexeme = EQUAL_tk; break; }                                                                  // ==
         else
-          { ungetc(znak, source); token.lexeme = ASSIGN_tk; break; }   // =
+          { ungetc(znak, source); token.lexeme = ASSIGN_tk; break; }                                           // =
        }         
        
        
@@ -105,11 +105,11 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='<')
-          { token.lexeme = INPUT_tk; break; }                            //  <<
+          { token.lexeme = INPUT_tk; break; }                                                                  //  <<
         else if(znak=='=')
-          { token.lexeme = LESSEQUAL_tk; break; }                      // <=  
+          { token.lexeme = LESSEQUAL_tk; break; }                                                              // <=  
         else
-          { ungetc(znak, source); token.lexeme = LESS_tk; break; }     // <
+          { ungetc(znak, source); token.lexeme = LESS_tk; break; }                                             // <
        }             
        
        
@@ -118,11 +118,11 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='>')
-          { token.lexeme = OUTPUT_tk; break; }                           //  >>
+          { token.lexeme = OUTPUT_tk; break; }                                                                 //  >>
         else if(znak=='=')
-          { token.lexeme = GREATEREQUAL_tk; break; }                   // >=  
+          { token.lexeme = GREATEREQUAL_tk; break; }                                                           // >=  
         else
-          { ungetc(znak, source); token.lexeme = GREATER_tk; break; }  // >
+          { ungetc(znak, source); token.lexeme = GREATER_tk; break; }                                          // >
        }       
        
        
@@ -131,13 +131,13 @@ tToken get_token(FILE *source)
        {
         znak = fgetc(source);
         if(znak=='/')
-          { do{ znak = fgetc(source);} while(znak != 10 || znak != 13 || znak != EOF); }         // jednoradkova poznamka // ... , ukonceno CR nebo LF
+          { do{ znak = fgetc(source);} while(znak != 10 || znak != 13 || znak != EOF); }                       // jednoradkova poznamka // ... , ukonceno CR nebo LF
         else if(znak=='*')
           {  
            while(1)
-             {                                                                                   // viceradkovy komentar /* ... */
+             {                                                                                                 // viceradkovy komentar /* ... */
               znak = fgetc(source);                                                              
-              if(znak==EOF){ token.lexeme = ERROR_tk; break;}                                    // neukončený víceřádkový komentář
+              if(znak==EOF){ token.lexeme = ERROR_tk; break;}                                                  // neukončený víceřádkový komentář
               if(znak=='*')
                 {
                  znak = fgetc(source);
@@ -148,13 +148,13 @@ tToken get_token(FILE *source)
           if(token.lexeme==EOF_tk){break;}    
           }                                                                          
         else                                                                                     
-          { ungetc(znak, source); token.lexeme = DIV_tk; break; }                                // operator /
+          { ungetc(znak, source); token.lexeme = DIV_tk; break; }                                              // operator /
        }         
        
        
        
-     if( isdigit(znak) != 0 )                                                                    // načítání INT
-       {                                                                                         // jak řešit dlouhá čísla, třeba o 50 cifrách?
+     if( isdigit(znak) != 0 )                                                                                  // načítání INT
+       {                                                                                                       // jak řešit dlouhá čísla, třeba o 50 cifrách?
         
         tNumber value_int;
         value_int.num = znak;     
@@ -180,12 +180,14 @@ tToken get_token(FILE *source)
        
        
        
-     if( isalpha(znak) != 0 || znak=='_')                                                        // načítání ID, FCE a klíčových slov
-       {                                                                                         // jak řešit dlouhá ID, třeba o 150 znacích?
+     if( isalpha(znak) != 0 || znak=='_')                                                                      // načítání ID, FCE a klíčových slov
+       {                                                                                                       
+        
+        int alloc_counter = 10;
         
         tNumber value;
-        value.string = (char *)malloc(50*sizeof(char));
-        if(value.string == NULL){ token.lexeme=ERROR_tk; break; }                                // chyba malloc - jak ošetřit?
+        value.string = (char *)malloc(alloc_counter*sizeof(char));
+        if(value.string == NULL){ token.lexeme=FAILURE_tk; break; }                                            // chyba malloc
         int lenght = 1;
         
         *(value.string) = (char)znak;
@@ -195,6 +197,11 @@ tToken get_token(FILE *source)
            znak = fgetc(source);
            if( isalnum(znak) != 0 || znak=='_')
              {
+              if(lenght == alloc_counter-1 )
+                {
+                 alloc_counter *=2;
+                 value.string = (char *)realloc(value.string, alloc_counter*sizeof(char));
+                }
               *(value.string + lenght*sizeof(char)) = (char)znak;
               lenght++;
              }
@@ -231,7 +238,39 @@ tToken get_token(FILE *source)
        
        
        
-       
+     if( znak == '"' )                                                                                         // načítání  řetězců
+       {                                                                                                       
+        
+        int alloc_counter = 10;
+        
+        tNumber value;
+        value.string = (char *)malloc(alloc_counter*sizeof(char));
+        if(value.string == NULL){ token.lexeme=FAILURE_tk; break; }                                            // chyba malloc
+        int lenght = 0;
+        
+        
+        while(1)
+          {
+           znak = fgetc(source);
+           if( znak != '"')
+             {
+              if(lenght == alloc_counter-1 )
+                {
+                 alloc_counter *=2;
+                 value.string = (char *)realloc(value.string, alloc_counter*sizeof(char));
+                }
+              *(value.string + lenght*sizeof(char)) = (char)znak;
+              lenght++;
+             }
+           else
+             {
+              token.lexeme = STRING_tk;
+              token.token_num = value;
+              break;
+             }  
+          }
+        break;
+       }               
        
             
       
