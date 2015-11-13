@@ -48,10 +48,25 @@ int main()
       printf("%s %d\n", "Chyba TOKENU na pozici", i );                        // 
   */
   
+  
+
+  
   do
     {    
      token = get_token(source);
-     printf("%d\n", token.lexeme);
+     
+     if(token.lexeme==NUM_tk)
+       {
+        printf("%d\t%d\n", token.lexeme, token.token_num.num); 
+       }
+     else if( token.lexeme == STRING_tk || token.lexeme == ID_tk )
+       {
+        printf("%d\t%s\n", token.lexeme, token.token_num.string);
+       }    
+     else
+       {
+        printf("%d\n", token.lexeme);
+       }
     } while(token.lexeme != EOF_tk ) ;
 
 
