@@ -5,7 +5,8 @@ prom1 _prom2
 
 !=  ==  <  >  >=  <= 
 =  +  -  *  /  ++  --  ;
-(  )  {  }
+(  )  {  } && || !
 
-15
-12.5
+"tohle je string delší než 10 znaků s diakritikou"
+ 
+ 0 1 2 -3 12 13 45.245.4
