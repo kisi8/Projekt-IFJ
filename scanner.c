@@ -157,7 +157,7 @@ tToken get_token(FILE *source)
        {                                                                                                       // jak řešit dlouhá čísla, třeba o 50 cifrách?
         
         tNumber value_int;
-        value_int.num = znak;     
+        value_int.num = znak-48;     
         
         while(1)
           {
@@ -165,7 +165,7 @@ tToken get_token(FILE *source)
            if( isdigit(znak) != 0)
              {
               value_int.num *= 10;
-              value_int.num += znak;
+              value_int.num += (znak-48);
              }
            else
              {
@@ -201,6 +201,7 @@ tToken get_token(FILE *source)
                 {
                  alloc_counter *=2;
                  value.string = (char *)realloc(value.string, alloc_counter*sizeof(char));
+                 if(value.string == NULL){ token.lexeme=FAILURE_tk; break; }
                 }
               *(value.string + lenght*sizeof(char)) = (char)znak;
               lenght++;
@@ -258,6 +259,7 @@ tToken get_token(FILE *source)
                 {
                  alloc_counter *=2;
                  value.string = (char *)realloc(value.string, alloc_counter*sizeof(char));
+                 if(value.string == NULL){ token.lexeme=FAILURE_tk; break; }
                 }
               *(value.string + lenght*sizeof(char)) = (char)znak;
               lenght++;
