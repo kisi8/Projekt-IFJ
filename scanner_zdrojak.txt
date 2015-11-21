@@ -1,12 +1,22 @@
-auto cin cout if else for bool while do
-double int string true false break continue return and or
+/*
+ Testovaci zdrojak
+*/  
+auto cin cout if else for bool while do // prvni cast klic. slov + komentar zacinaji //
+double int string true false break continue return and or // and or nejsou klic slova!
 
-prom1 _prom2
+prom1 _prom2  /* 
+	do prom1 si ulozim znaky /*
+	do prom 2 si dam * a nasledne / 
+	nebo taky * / s mezerou, to se uvidi
 
+*/
+
+ /* Tohle jsou relaci operatory kdzyby nekdo nevedel
+ */  
 !=  ==  <  >  >=  <= 
 =  +  -  *  /  ++  --  ;
 (  )  {  } && || !
 
 "tohle je string delší než 10 znaků s diakritikou"
  
- 0 1 2 -3 12 13 45.245.4
+ 0 1 2 -3 12 13 45.245.4 
