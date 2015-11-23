@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int length(char s[]);
+char *substr(char s[], int i, int n);
+char *concat(char s1[], char s2[]);
+int find(char s[], char string[]);
+void table(char string[], int length, int* order);
+
+int main()
+{
+   char *a=NULL;
+   a=substr("banan",0,5);
+   printf("%s",a);
+   char *b=NULL;
+   b=concat("abcdefghijklmn","opqrstuvwyxz");
+   printf("%s",b);
+   int c=find("fgfabccd","f");
+   printf("%d",c);
+
+   return 0;
+}
+
+int length(char s[])
+{
+   int i=0;
+   while (s[i] != '\0')
+    {
+      i++;
+    }
+    return i;
+}
+
+char *substr(char s[], int i, int n)
+{
+  if (n>strlen(s) || i<0 || n<0 || i>=strlen(s) ) {
+    return "ERROR: Wrong values of arguments!";
+  }
+
+  int counter=i;
+  int place=0;
+  char *sub;
+
+  sub=malloc(sizeof(char)*(n+1));
+
+  for (; counter<i+n; counter++,place++)
+  {
+    if (s[counter] == '\0') {
+        break;
+    }
+    sub[place]=s[counter];
+  }
+
+  sub[place]='\0';
+
+  return sub;
+}
+
+char *concat(char s1[], char s2[])
+{
+  char *konkat;
+  int i=0;
+
+  konkat=malloc(sizeof(char)*(strlen(s1)+strlen(s2)+1));
+
+  for (;strlen(s1);i++)
+    {
+      if (s1[i] == '\0') {
+        break;
+      }
+      konkat[i]=s1[i];
+    }
+
+  for (i=0;i<strlen(s2);i++)
+    {
+      if (s2[i] == '\0') {
+        break;
+      }
+      konkat[strlen(s1)+i]=s2[i];
+    }
+  konkat[strlen(s1)+i]='\0';
+
+  return konkat;
+}
+
+int find(char s[], char string[])
+{
+    int length_string=strlen(string);
+    int length_s=strlen(s);
+	int order[length_string+1];
+	int i=0; //counter pre podretazec
+	int j=0; //counter pre retazec
+
+	table(string, length_string, &order[0]);
+
+	while (j < length_s) {
+		if (string[i] == s[j]) {
+			if (i == length_string-1) {
+				return (j-length_string+1);
+			}
+			else {i++; j++;}
+		}
+		else if (order[i] == -1) {i=0; j++;}
+		else i=order[i];
+	}
+	return -1;
+}
+
+void table(char string[], int length, int* order)
+{
+    int i = 0;
+    int j = order[0] = -1;
+    while (i  <  length) {
+        while (j > -1 && string[i] != string[j]) j = order[j];
+        i++; j++;
+        if (string[i] == string[j]) order[i] = order[j];
+        else order[i] = j;
+    }
+}
+
+/*char *sort(char s[])
+{
+
+}*/
